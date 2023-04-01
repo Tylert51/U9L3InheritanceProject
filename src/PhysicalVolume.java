@@ -6,4 +6,8 @@ public class PhysicalVolume extends LVM{
         super(n);
         physicalDrive = d;
     }
+
+    public PhysicalDrive getPhysicalDrive() {
+        return physicalDrive;
+    }
 }

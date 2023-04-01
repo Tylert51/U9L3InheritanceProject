@@ -1,10 +1,14 @@
 public class PhysicalDrive extends LVM {
 
-    double size;
+    int size;
 
-    public PhysicalDrive(String name, double s) {
+    public PhysicalDrive(String name, int s) {
         super(name);
         size = s;
+    }
+
+    public int getSize() {
+        return size;
     }
 
 }
