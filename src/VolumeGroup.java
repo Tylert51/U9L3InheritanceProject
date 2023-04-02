@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class VolumeGroup extends LVM{
 
-    ArrayList<PhysicalVolume> listOfPV;
-    ArrayList<LogicalVolume> listOfLV;
+    private ArrayList<PhysicalVolume> listOfPV;
+    private ArrayList<LogicalVolume> listOfLV;
 
     public VolumeGroup(String s) {
         super(s);

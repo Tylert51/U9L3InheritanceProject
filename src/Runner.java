@@ -54,7 +54,7 @@ public class Runner {
 
             manager.addPD(pD);
 
-            System.out.println("Drive successfully installed");
+            System.out.println("Drive " + parts[0] +  " installed");
         } else {
             System.out.println("Already a drive installed with that name");
         }
@@ -94,7 +94,7 @@ public class Runner {
         } else {
 
             PhysicalVolume pV = new PhysicalVolume(parts[0], associated);
-            System.out.println("Physical volume successfully created");
+            System.out.println(parts[0] + " created");
 
             manager.addPV(pV);
         }
@@ -106,7 +106,15 @@ public class Runner {
 
         if(listOfPV.size() >= 1) {
             for(PhysicalVolume vol : listOfPV) {
-                System.out.println(vol.getName() + ": [" + vol.getPhysicalDrive().getSize() + "G] [" + vol.getUUID() + "]");
+
+                if(!vol.doesHaveVG()) {
+                    System.out.println(vol.getName() + ": [" + vol.getPhysicalDrive().getSize() + "G] [" + vol.getUUID() + "]");
+
+                } else {
+                    System.out.println(vol.getName() + ": [" + vol.getPhysicalDrive().getSize() + "G] " +
+                            "[" + vol.getAssociatedVG().getName() + "] [" + vol.getUUID() + "]");
+
+                }
             }
         } else {
             System.out.println("No physical volumes have been created");
