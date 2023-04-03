@@ -31,6 +31,18 @@ public class Runner {
 
                 printPVolumes(manager);
 
+            } else if (ans.contains("vgcreate")) {
+
+                createVG(ans, manager);
+
+            } else if (ans.contains("vgextend")) {
+
+                extendVG(ans, manager);
+
+            } else if (ans.contains("vglist")) {
+
+                listVG(manager);
+
             }
 
 
@@ -85,7 +97,7 @@ public class Runner {
         if(associated == null) {
             System.out.println("There is no such physical drive\nFailed to create physical volume");
 
-        } else if (!manager.doesNotContainPV(parts[0])) {
+        } else if (manager.doesContainPV(parts[0])) {
             System.out.println("Already a physical volume with that name");
 
         } else if (usedDrives.contains(associated)) {
@@ -119,5 +131,75 @@ public class Runner {
         } else {
             System.out.println("No physical volumes have been created");
         }
+    }
+
+    public static void createVG(String ans, LVMSystem manager) {
+        String sub = ans.substring(9);
+        String[] split = sub.split(" ");
+
+        String vgName = split[0];
+        String pvName = split[1];
+        PhysicalVolume associated = manager.getPV(pvName);
+
+        ArrayList<PhysicalVolume> usedPV = manager.getUsedPV();
+
+        if(manager.doesContainVG(vgName)) {
+            System.out.println("Already a volume group with that name");
+
+        } else if (usedPV.contains(associated)) {
+            System.out.println("That physical volume is already associated with a volume group");
+
+        } else if (associated == null) {
+            System.out.println("There is no such physical volume");
+
+        } else {
+            VolumeGroup vg = new VolumeGroup(vgName);
+            vg.addPV(associated);
+            associated.addVG(vg);
+
+            manager.addVG(vg);
+            System.out.println(vgName + " created");
+        }
+    }
+
+    public static void extendVG(String ans, LVMSystem manager) {
+        String sub = ans.substring(9);
+        String[] split = sub.split(" ");
+
+        String vgName = split[0];
+        String pvName = split[1];
+        VolumeGroup vg = manager.getVG(vgName);
+        PhysicalVolume pv = manager.getPV(pvName);
+
+        ArrayList<PhysicalVolume> usedPV = manager.getUsedPV();
+
+        if(vg == null) {
+            System.out.println("There is no such volume group");
+
+        } else if (pv == null) {
+            System.out.println("There is no such physical volume");
+
+        } else if (usedPV.contains(pv)) {
+            System.out.println("That physical volume is already associate with another volume group");
+
+        } else {
+            vg.addPV(pv);
+            pv.addVG(vg);
+            System.out.println(pvName + " added to " + vgName);
+
+        }
+    }
+
+    public static void listVG(LVMSystem manager) {
+        ArrayList<VolumeGroup> listOfVG = manager.getListOfVG();
+
+        for(VolumeGroup vg : listOfVG) {
+
+            System.out.println(vg.getName() + ": total:[" + vg.getTotalSpace() + "G] " +
+                    "available:[" + vg.getRemainingSpace() + "G] [" + vg.listPVs() + "] " +
+                    "[" + vg.getUUID() + "]");
+
+        }
+
     }
 }

@@ -27,43 +27,43 @@ public class LVMSystem {
         return true;
     }
 
-    public boolean doesNotContainPV(String n) {
+    public boolean doesContainPV(String n) {
 
         for(PhysicalVolume volume : listOfPV) {
             String name = volume.getName();
 
             if(name.equals(n)) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
-    public boolean doesNotContainVG(String n) {
+    public boolean doesContainVG(String n) {
 
         for(VolumeGroup group : listOfVG) {
             String name = group.getName();
 
             if(name.equals(n)) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
-    public boolean doesNotContainLV(String n) {
+    public boolean doesContainLV(String n) {
 
         for(LogicalVolume volume : listOfLV) {
             String name = volume.getName();
 
             if(name.equals(n)) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     public void addPD(PhysicalDrive p) {
@@ -118,5 +118,42 @@ public class LVMSystem {
         }
 
         return used;
+    }
+
+    public ArrayList<PhysicalVolume> getUsedPV() {
+        ArrayList<PhysicalVolume> used = new ArrayList<>();
+
+        for(PhysicalVolume vol : listOfPV) {
+            if(vol.getAssociatedVG() != null) {
+                used.add(vol);
+            }
+        }
+
+        return used;
+    }
+
+    public PhysicalVolume getPV(String n) {
+        for(PhysicalVolume vol : listOfPV) {
+            String name = vol.getName();
+
+            if(name.equals(n)) {
+                return vol;
+            }
+
+        }
+
+        return null;
+    }
+
+    public VolumeGroup getVG(String n) {
+        for(VolumeGroup vg : listOfVG) {
+            String name = vg.getName();
+
+            if(name.equals(n)) {
+                return vg;
+            }
+        }
+
+        return null;
     }
 }

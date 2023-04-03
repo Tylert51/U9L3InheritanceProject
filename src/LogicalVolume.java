@@ -8,4 +8,8 @@ public class LogicalVolume extends LVM{
         associatedVG = vg;
         size = s;
     }
+
+    public double getSize() {
+        return size;
+    }
 }
