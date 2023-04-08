@@ -1,4 +1,4 @@
-public class LogicalVolume extends LVM{
+public class LogicalVolume extends LVM implements Comparable<LogicalVolume> {
 
     private VolumeGroup associatedVG;
     private double size;
@@ -11,5 +11,15 @@ public class LogicalVolume extends LVM{
 
     public double getSize() {
         return size;
+    }
+
+    public VolumeGroup getAssociatedVG() {
+        return associatedVG;
+    }
+
+    public int compareTo(LogicalVolume vol) {
+
+        return this.associatedVG.getName().compareTo(vol.getAssociatedVG().getName());
+
     }
 }

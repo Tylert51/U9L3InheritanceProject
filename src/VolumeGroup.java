@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class VolumeGroup extends LVM{
+public class VolumeGroup extends LVM {
 
     private ArrayList<PhysicalVolume> listOfPV;
     private ArrayList<LogicalVolume> listOfLV;

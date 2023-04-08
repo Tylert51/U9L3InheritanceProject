@@ -1,4 +1,4 @@
-public class PhysicalVolume extends LVM{
+public class PhysicalVolume extends LVM implements Comparable<PhysicalVolume> {
 
     private PhysicalDrive physicalDrive;
     private VolumeGroup associatedVG;
@@ -23,6 +23,12 @@ public class PhysicalVolume extends LVM{
 
     public VolumeGroup getAssociatedVG() {
         return associatedVG;
+    }
+
+    public int compareTo(PhysicalVolume vol) {
+
+        return this.getAssociatedVG().getName().compareTo(vol.getAssociatedVG().getName());
+
     }
 
 }

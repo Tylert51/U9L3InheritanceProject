@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class LVMSystem {
 
@@ -6,6 +7,7 @@ public class LVMSystem {
     private ArrayList<PhysicalVolume> listOfPV;
     private ArrayList<VolumeGroup> listOfVG;
     private ArrayList<LogicalVolume> listOfLV;
+
 
     public LVMSystem() {
         listOfPD = new ArrayList<PhysicalDrive>();
@@ -87,6 +89,7 @@ public class LVMSystem {
     }
 
     public ArrayList<PhysicalVolume> getListOfPV() {
+        Collections.sort(listOfPV);
         return listOfPV;
     }
 
@@ -95,6 +98,7 @@ public class LVMSystem {
     }
 
     public ArrayList<LogicalVolume> getListOfLV() {
+        Collections.sort(listOfLV);
         return listOfLV;
     }
 
@@ -156,4 +160,19 @@ public class LVMSystem {
 
         return null;
     }
+
+    public LogicalVolume getLV(String n) {
+        for(LogicalVolume lv : listOfLV) {
+            String name = lv.getName();
+
+            if (name.equals(n)) {
+                return lv;
+            }
+        }
+
+        return null;
+    }
+
+
+
 }

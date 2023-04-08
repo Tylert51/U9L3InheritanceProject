@@ -43,6 +43,18 @@ public class Runner {
 
                 listVG(manager);
 
+            } else if (ans.contains("lvcreate")) {
+
+                createLV(ans, manager);
+
+            } else if (ans.equals("lvlist")) {
+
+                listLV(manager);
+
+            } else {
+
+                System.out.println("Invalid command");
+
             }
 
 
@@ -156,8 +168,8 @@ public class Runner {
             VolumeGroup vg = new VolumeGroup(vgName);
             vg.addPV(associated);
             associated.addVG(vg);
-
             manager.addVG(vg);
+
             System.out.println(vgName + " created");
         }
     }
@@ -201,5 +213,46 @@ public class Runner {
 
         }
 
+    }
+
+    public static void createLV(String ans, LVMSystem manager) {
+        String sub = ans.substring(9);
+        String[] split = sub.split(" ");
+
+        String lvName = split[0];
+
+        String s = split[1];
+        double size = Double.parseDouble(s.substring(0, s.length() - 1));
+
+        String vgName = split[2];
+        VolumeGroup vg = manager.getVG(vgName);
+
+        if(vg == null) {
+            System.out.println("No such volume group exists");
+
+        } else if (vg.getRemainingSpace() < size) {
+            System.out.println("The volume group only has " + vg.getRemainingSpace() + "G remaining");
+
+        } else if (manager.doesContainLV(lvName)) {
+            System.out.println("That logical volume name is already used");
+
+        } else {
+            LogicalVolume lv = new LogicalVolume(lvName, vg, size);
+
+            vg.addLV(lv);
+            manager.addLV(lv);
+
+            System.out.println(lvName + " created");
+        }
+    }
+
+    public static void listLV(LVMSystem manager) {
+        ArrayList<LogicalVolume> listOfLV = manager.getListOfLV();
+
+        for(LogicalVolume vol : listOfLV) {
+
+            System.out.println(vol.getName() + ": [" + vol.getSize() + "G] [" + vol.getAssociatedVG().getName() +  "] [" + vol.getUUID() + "]");
+
+        }
     }
 }
