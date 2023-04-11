@@ -1,4 +1,6 @@
-public class PhysicalDrive extends LVM {
+import java.io.Serializable;
+
+public class PhysicalDrive extends LVM implements Serializable {
 
     private int size;
 

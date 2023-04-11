@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.UUID;
 
 
-public class LVM {
+public class LVM implements Serializable {
     private String name;
     private UUID ID;
 

@@ -1,4 +1,6 @@
-public class LogicalVolume extends LVM implements Comparable<LogicalVolume> {
+import java.io.Serializable;
+
+public class LogicalVolume extends LVM implements Comparable<LogicalVolume>, Serializable {
 
     private VolumeGroup associatedVG;
     private double size;

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class VolumeGroup extends LVM {
+public class VolumeGroup extends LVM implements Serializable {
 
     private ArrayList<PhysicalVolume> listOfPV;
     private ArrayList<LogicalVolume> listOfLV;

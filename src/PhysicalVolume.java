@@ -1,4 +1,6 @@
-public class PhysicalVolume extends LVM implements Comparable<PhysicalVolume> {
+import java.io.Serializable;
+
+public class PhysicalVolume extends LVM implements Comparable<PhysicalVolume>, Serializable {
 
     private PhysicalDrive physicalDrive;
     private VolumeGroup associatedVG;

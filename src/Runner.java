@@ -1,19 +1,21 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Runner {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Scanner s = new Scanner(System.in);
         LVMSystem manager = new LVMSystem();
+        FileWriter fw = new FileWriter();
+
+        fw.readFile(manager);
 
         System.out.println("Welcome to the LVM System\n");
         System.out.print("cmd #: ");
         String ans = s.nextLine();
 
         while (!ans.equals("exit")) {
-
 
             if(ans.contains("install-drive")) {
 
@@ -51,6 +53,10 @@ public class Runner {
 
                 listLV(manager);
 
+            } else if (ans.equals("reset")) {
+
+                manager.reset();
+
             } else {
 
                 System.out.println("Invalid command");
@@ -62,7 +68,7 @@ public class Runner {
             ans = s.nextLine();
         }
 
-
+        fw.writeFile(manager);
     }
 
     public static void installDrive(String ans, LVMSystem manager) {

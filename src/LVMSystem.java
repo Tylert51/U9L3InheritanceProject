@@ -16,6 +16,13 @@ public class LVMSystem {
         listOfLV = new ArrayList<LogicalVolume>();
     }
 
+    public void setLists(ArrayList<PhysicalDrive> pd, ArrayList<PhysicalVolume> pv, ArrayList<VolumeGroup> vg, ArrayList<LogicalVolume> lv) {
+        listOfPD = pd;
+        listOfPV = pv;
+        listOfVG = vg;
+        listOfLV = lv;
+    }
+
     public boolean doesNotContainPD(String n) {
 
         for(PhysicalDrive drive : listOfPD) {
@@ -171,6 +178,17 @@ public class LVMSystem {
         }
 
         return null;
+    }
+
+    public void reset() {
+
+        listOfPD = new ArrayList<PhysicalDrive>();
+        listOfPV = new ArrayList<PhysicalVolume>();
+        listOfVG = new ArrayList<VolumeGroup>();
+        listOfLV = new ArrayList<LogicalVolume>();
+
+        System.out.println("Lists successfully reset");
+
     }
 
 

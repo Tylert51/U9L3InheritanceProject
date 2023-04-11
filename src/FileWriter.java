@@ -9,55 +9,46 @@ import java.io.ObjectOutputStream;
 
 public class FileWriter {
 
-    public void writeFile(ArrayList<PhysicalDrive> pd, ArrayList<PhysicalVolume> pv, ArrayList<VolumeGroup> vg, ArrayList<LogicalVolume> lv) {
+    public void writeFile(LVMSystem manager) throws IOException {
 
-        try {
-            FileOutputStream f = new FileOutputStream(new File("LVM.txt"));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-
-            // Write objects to file
-            for (PhysicalDrive drive : pd) {
-                o.writeObject(drive);
-            }
-
-            for (PhysicalVolume vol : pv) {
-                o.writeObject(vol);
-            }
-
-            for (VolumeGroup group : vg) {
-                o.writeObject(group);
-            }
-
-            for (LogicalVolume vol : lv) {
-                o.writeObject(vol);
-            }
-
-            o.close();
-            f.close();
+        ArrayList<PhysicalDrive> pd = manager.getListOfPD();
+        ArrayList<PhysicalVolume> pv = manager.getListOfPV();
+        ArrayList<VolumeGroup> vg = manager.getListOfVG();
+        ArrayList<LogicalVolume> lv = manager.getListOfLV();
 
 
-            FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
-            ObjectInputStream oi = new ObjectInputStream(fi);
+        FileOutputStream fos = new FileOutputStream("LVM.txt");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-            // Read objects
-            Person pr1 = (Person) oi.readObject();
-            Person pr2 = (Person) oi.readObject();
+        oos.writeObject(pd);
+        oos.writeObject(pv);
+        oos.writeObject(vg);
+        oos.writeObject(lv);
 
+        oos.close();
+        fos.close();
+    }
 
-            oi.close();
-            fi.close();
+    public void readFile(LVMSystem manager) throws IOException, ClassNotFoundException {
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+        FileInputStream fi = new FileInputStream("LVM.txt");
+        ObjectInputStream oi = new ObjectInputStream(fi);
 
-        } catch (IOException e) {
-            System.out.println("Error initializing stream");
+        ArrayList<PhysicalDrive> pd = new ArrayList<PhysicalDrive>();
+        ArrayList<PhysicalVolume> pv = new ArrayList<PhysicalVolume>();
+        ArrayList<VolumeGroup> vg = new ArrayList<VolumeGroup>();
+        ArrayList<LogicalVolume> lv = new ArrayList<LogicalVolume>();
 
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // Read objects
+        pd = (ArrayList<PhysicalDrive>) oi.readObject();
+        pv = (ArrayList<PhysicalVolume>) oi.readObject();
+        vg = (ArrayList<VolumeGroup>) oi.readObject();
+        lv = (ArrayList<LogicalVolume>) oi.readObject();
 
+        manager.setLists(pd, pv, vg, lv);
+
+        oi.close();
+        fi.close();
     }
 
 }
