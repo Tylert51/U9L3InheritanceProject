@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,6 +25,8 @@ public class FileWriter {
 
         oos.close();
         fos.close();
+
+        System.out.println("Data saved");
     }
 
     public void readFile(LVMSystem manager) throws IOException, ClassNotFoundException {
@@ -49,6 +49,8 @@ public class FileWriter {
 
         oi.close();
         fi.close();
+
+        System.out.println("Data loaded");
     }
 
 }
