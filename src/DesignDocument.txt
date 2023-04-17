@@ -1,0 +1,197 @@
+FileWriter class
+    Methods:
+        writeFile(LVMSystem manager) returns void
+             gets the instantiated array lists, using the manager parameter, with all the drives and writes them to a file
+
+        readFile(LVMSystem manager) returns void
+            read the objects from a file and adds these objects to their respective lists (LogicalVolume, PhysicalDrive, PhysicalVolume, or VolumeGroup array lists)
+
+
+LVM class
+    Instance Variables:
+        1. name which is a String representing the name the user named the drive
+        2. ID which is a unique UUID representing the UUID of the drive
+
+    Constructor:
+        LVM(String n)
+            instantiates the object setting the name of the drive to the String parameter n and also creates a UUID for the drive and sets that to the instance variable ID
+
+    Methods:
+        getName() returns String
+            returns the name of the drive
+
+        getUUID() returns UUID
+            returns the UUID of the drive
+
+
+PhysicalDrive class (extends LVM)
+    Instance Variables:
+        1. size which is an int representing the size of the drive in gigabytes
+
+    Constructor:
+        PhysicalDrive(String name, int s)
+            instantiates the PhysicalDrive object with a name of the String parameter name, and size, s
+
+    Methods:
+        getSize() returns int
+            will return the size of the PhysicalDrive in gigabytes
+
+
+PhysicalVolume class (extends LVM)
+    Instance Variables:
+        1. physicalDrive which is a PhysicalDrive representing the physical drive this volume was created on
+        2. associatedVG which is a VolumeGroup representing the VolumeGroup this PhysicalVolume belongs to
+
+    Constructor:
+        PhysicalVolume(String n , PhysicalDrive d)
+            sets the name of the PhysicalVolume to String n and the associated PhysicalDrive to PhysicalDrive d
+            sets the associatedVG to null since there may not be a created VolumeGroup upon the instantiation of this object
+
+    Methods:
+        getPhysicalDrive() returns PhysicalDrive
+            returns the PhysicalDrive this PhysicalVolume was created on
+
+        addVG(VolumeGroup vg) returns void
+            this method will set the instance variable associatedVG to VolumeGroup vg implying the addition of this PhysicalVolume to VolumeGroup vg
+
+        doesHaveVG() returns boolean
+            returns true if this PhysicalVolume is in a VolumeGroup and false otherwise
+
+        getAssociatedVG() returns VolumeGroup
+            returns the VolumeGroup that this PhysicalVolume is part of
+
+        @Override
+        compareTo(PhysicalVolume vol) returns int
+            returns an integer value representing the difference between the name of this PhysicalVolume compared to that of PhysicalVolume vol
+
+
+VolumeGroup class (extends LVM)
+    Instance Variables:
+        1. listOfPV which is an ArrayList<PhysicalVolume> representing the list of PhysicalVolumes this VolumeGroup contains
+        2. listOfLV which is an ArrayList<LogicalVolume> representing the list of LogicalVolumes this VolumeGroup contains
+
+    Constructor:
+        VolumeGroup(String s)
+            sets the name of this VolumeGroup to String s
+            also instantiates the two array lists (listOfPV, listOfLV) to empty array lists
+
+    Methods:
+        addPV(PhysicalVolume pv) returns void
+            this method adds PhysicalVolume pv to the ArrayList listOfPV
+
+        addLV(LogicalVolume lv) returns void
+            this method adds LogicalVolume lv to the ArrayList listOfLV
+
+        getTotalSpace() returns int
+            iterates across all the PhysicalVolumes and adds their sizes and returns the total
+
+        getRemainingSpace() returns double
+            iterates across all the LogicalVolumes and subtracts their sizes from the total space and returns this value
+
+        listPVs() returns String
+            iterates through all the PhysicalVolumes and returns a String that displays this list with a certain format (pv1, pv2, pv3...)
+
+
+LogicalVolume class (extends LVM)
+    Instance Variables:
+        1. associatedVG which is a VolumeGroup representing the VolumeGroup this LogicalVolume is a part of
+        2. size which is a double representing the size of this LogicalVolume (user input)
+
+    Constructor:
+        LogicalVolume(String n, VolumeGroup vg, double s)
+            sets the name of this LogicalVolume to String n, the associatedVG to VolumeGroup vg, and size to double s
+
+    Methods:
+        getSize() returns double
+            returns the size of this LogicalVolume
+
+        getAssociatedVG() returns VolumeGroup
+            returns the VolumeGroup this LogicalVolume is associated with
+
+        @Override
+        compareTo(LogicalVolume vol) returns int
+            returns an integer value representing the difference between the name of this LogicalVolume compared to that of LogicalVolume vol
+
+
+LVMSystem class
+    Instance Variables:
+        1. listOfPD which is an ArrayList<PhysicalDrive> representing the list of every PhysicalDrive created
+        2. listOfPV which is an ArrayList<PhysicalVolume> representing the list of every PhysicalVolume created
+        3. listOfVG which is an ArrayList<VolumeGroup> representing the list of every VolumeGroup created
+        4. listOfLV which is an ArrayList<LogicalVolume> representing the list of every LogicalVolume created
+
+    Constructor:
+        LVMSystem()
+            instantiates the 4 array lists instance variables as empty array lists
+
+    Methods:
+        setLists(ArrayList<PhysicalDrive> pd, ArrayList<PhysicalVolume> pv, ArrayList<VolumeGroup> vg, ArrayList<LogicalVolume> lv) returns void
+            sets the 4 array lists instance variables to their respective array lists parameters
+            used when reading objects from a file to fill the array lists with created objects
+
+        doesNotContainPD(String n) returns boolean
+            searches through listOfPD for a PhysicalDrive with name String n and returns false if there is and true otherwise
+
+        doesContainPV(String n) returns boolean
+            searches through listOfPV for a PhysicalVolume with name String n and returns true if there is and false otherwise
+
+        doesContainVG(String n) returns boolean
+            searches through listOfVG for a VolumeGroup with name String n and returns true if there is and false otherwise
+
+        doesContainLV(String n) returns boolean
+            searches through listOfLV for a LogicalVolume with name String n and returns true if there is and false otherwise
+
+        addPD(PhysicalDrive p) returns void
+            adds PhysicalDrive p to listOfPD
+
+        addPV(PhysicalVolume p) returns void
+            adds PhysicalVolume p to listOfPV
+
+        addVG(VolumeGroup v) returns void
+            adds VolumeGroup v to listOfVG
+
+        addLV(LogicalVolume l) returns void
+            adds LogicalVolume l to listOfLV
+
+        getListOfPD() returns ArrayList<PhysicalDrive>
+            returns the list of PhysicalDrives created thus far
+
+        getListOfPV() returns ArrayList<PhysicalVolume>
+            returns the list of PhysicalVolumes created thus far
+
+        getListOfVG() returns ArrayList<VolumeGroup>
+            returns the list of VolumeGroups created thus far
+
+        getListOfLV() returns ArrayList<LogicalVolume>
+            returns the list of LogicalVolumes created thus far
+
+        getPD(String n) returns PhysicalDrive
+            searches through listOfPD and returns the PhysicalDrive with name String n and null otherwise
+
+        getUsedDrives() returns ArrayList<PhysicalDrive>
+            returns an ArrayList<PhysicalDrive> containing all the PhysicalDrives that are already associated with a PhysicalVolume
+
+        getUsedPV() returns ArrayList<PhysicalVolume>
+            returns an ArrayList<PhysicalVolume> containing all the PhysicalVolumes that are already associated with a VolumeGroup
+
+        getPV(String n) returns PhysicalVolume
+            searches through listOfPV and returns the PhysicalVolume with name String n and null otherwise
+
+        getVG(String n) returns VolumeGroup
+            searches through listOfVG and returns the VolumeGroup with name String n and null otherwise
+
+        getLV(String n) returns LogicalVolume
+            searches through listOfLV and returns the LogicalVolume with name String n and null otherwise
+
+        reset() returns void
+            resets all the 4 array lists (listOfPD, listOfPV, listOfVG, listOfLV) to empty array lists
+
+
+Runner Class:
+    1. instantiates all the necessary objects (Scanner, LVMSystem, and FileWriter)
+    2. loads all the necessary objects into their respective array lists from the file
+    3. prompts the user with "cmd #: " and waits for their input
+    4. depending on what they input, the program would then do one of many things (install a PhysicalDrive, list the PhysicalDrives, create a PhysicalVolume, list the PhysicalVolumes, create a VolumeGroup, list the VolumeGroups, extend a certain VolumeGroup, create a LogicalVolume, list the LogicalVolumes, reset the lists, or exit) and will display whether it was successful or an error occurred
+        a) the code for each of these actions is grouped in methods. All of them have an LVMSystem manager parameter so that the method can call methods from the LVMSystems class. Some of these main class methods also have a String ans parameter where it takes in the user input and uses the substring method to split the input into various variables for the construction of an object such as name or size
+    5. While the user doesn't exit the program, they can do anything that deals with the LVM and will be prompted with another cmd line after every action
+    6. Once the user chooses to exit, the all the objects that they have created will be written to a file which will be read again once they restart the program
